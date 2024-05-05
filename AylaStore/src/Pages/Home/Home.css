@@ -1,0 +1,5 @@
+body{
+    background-size: cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../Assets/bg.jpg') no-repeat center/cover; 
+    background-size: cover;
+}
