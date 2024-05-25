@@ -1,0 +1,51 @@
+
+footer {
+    padding: 20px;
+    background-color:#000;
+    color: white;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col-full {
+    flex: 1 1 100%;
+  }
+  
+  .col-half {
+    flex: 1 1 50%;
+  }
+  
+  .col-3rd {
+    flex: 1 1 33.33%;
+  }
+  
+  .mb-5 {
+    margin-bottom: 20px;
+  }
+  
+  .foot-center {
+    text-align: center;
+  }
+  
+  .footer-logo {
+    margin-top: 10px;
+    width: 250px;
+    height: 200px;
+  }
+  
+  .block {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+
+  }
+  
+  .footer-block {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  

@@ -1,0 +1,19 @@
+.about-pic {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+.lemon-primary-lemon{
+  margin-top: 20px;
+  font-size: 32px;
+}
+p{
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+@media only screen and (min-width: 1200px) {
+  .about-pic {
+    max-width: 456px
+  }
+}

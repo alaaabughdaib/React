@@ -1,0 +1,27 @@
+
+.navbar {
+  background-color:#000; 
+  color: #fff; 
+  font-family: Arial, sans-serif; 
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: large;
+  color: #fff; 
+  padding: 10px 20px; 
+}
+
+
+.active {
+  color: #827d49; 
+}
+
+.logo-height {
+  height: 100px;
+  width: 200px; 
+}
+
+.nav-link:hover {
+  color: #ffea00; 
+}
