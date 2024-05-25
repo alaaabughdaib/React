@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import './ProductDetails.css'; 
 import { useParams, Link } from 'react-router-dom'; 
 import Button from '@mui/material/Button';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Header from '../../Components/Common/Header/Header';
+import { addToCart } from '../../actions/cartActions';
 
-const ProductDetails = () => {
+const ProductDetails = ({ addToCart }) => {
   const [product, setProduct] = useState(null);
   const { productId } = useParams();
 
@@ -27,10 +29,8 @@ const ProductDetails = () => {
   }, [productId]);
 
   const handleAddToCart = () => {
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const newItem = { id: productId, title: product.title, price: product.price , image:product.thumbnail };
-    const updatedCart = [...cartItems, newItem];
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    addToCart(newItem); 
     alert('Product added to cart!');
   };
 
@@ -65,5 +65,8 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+const mapDispatchToProps = {
+  addToCart,
+};
 
+export default connect(null, mapDispatchToProps)(ProductDetails);

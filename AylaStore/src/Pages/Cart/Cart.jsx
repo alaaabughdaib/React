@@ -1,30 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import './Cart.css'; 
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { removeFromCart } from '../../actions/cartActions';
+import './Cart.css';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Header from '../../Components/Common/Header/Header';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
-const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
+const Cart = ({ cartItems, removeFromCart }) => {
 
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    setCartItems(storedCart);
-    calculateTotalAmount(storedCart);
-  }, []);
 
-  const calculateTotalAmount = (items) => {
-    const total = items.reduce((acc, item) => acc + item.price, 0);
-    setTotalAmount(total);
+  const removeFromCartHandler = (itemId) => {
+    removeFromCart(itemId);
   };
 
-  const removeFromCart = (itemId) => {
-    const updatedCart = cartItems.filter(item => item.id !== itemId);
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    calculateTotalAmount(updatedCart);
+  const calculateTotalAmount = () => {
+    return cartItems.reduce((acc, item) => acc + item.price, 0);
   };
 
   return (
@@ -40,43 +31,48 @@ const Cart = () => {
               <div className="cart-item-details">
                 <h3>{item.title}</h3>
                 <p>Price: ${item.price}</p>
-                <Button variant="contained" onClick={() => removeFromCart(item.id)}>Remove</Button>
+                <Button variant="contained" onClick={() => removeFromCartHandler(item.id)}>Remove</Button>
               </div>
             </div>
           ))
         )}
         <div> 
-        <h1> Check Out :</h1>
-        </div>
- 
-            <PayPalScriptProvider options={{ 'client-id': 'ASIHrXGYVUe73Nj1L9sHIiIHLM7C9IraV7CvsYzTYIyTREFTrVMAi3UbHcaJuyL5XURIxR3QMLmWlJeC' }}>
-              <PayPalButtons
-                fundingSource="paypal"
-                style={{ layout: 'horizontal', color: 'white', shape: 'rect', label: 'pay', tagline: false, height: 50, width: 50 }}
-                createOrder={(data, actions) => {
-                  return actions.order.create({
-                    purchase_units: [
-                      {
-                        amount: {
-                      currency_code: "USD",
-                      value: totalAmount.toFixed(2), 
-                    },
+          <h1>Total Amount: ${calculateTotalAmount().toFixed(2)}</h1>
+  
+          <PayPalScriptProvider options={{ 'client-id': 'ASIHrXGYVUe73Nj1L9sHIiIHLM7C9IraV7CvsYzTYIyTREFTrVMAi3UbHcaJuyL5XURIxR3QMLmWlJeC' }}>
+            <PayPalButtons
+              fundingSource="paypal"
+              style={{ layout: 'horizontal', color: 'white', shape: 'rect', label: 'pay', tagline: false, height: 50, width: 50 }}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        currency_code: "USD",
+                        value: calculateTotalAmount().toFixed(2), 
                       },
-                    ],
-                  });
-                }}
-                onApprove={async (data, actions) => {
-                  console.log('Payment approved:', data);
-       
-
-                }}
-              />
-            </PayPalScriptProvider>
-          
-    
+                    },
+                  ],
+                });
+              }}
+              onApprove={async (data, actions) => {
+                console.log('Payment approved:', data);
+             
+              }}
+            />
+          </PayPalScriptProvider>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Cart;
+const mapStateToProps = (state) => ({
+  cartItems: state.cart.cartItems, 
+});
+
+const mapDispatchToProps = {
+  removeFromCart: removeFromCart,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
